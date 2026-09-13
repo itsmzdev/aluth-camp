@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const { campgroundSchema } = require("../schemas.js");
 const ExpressError = require("../helper/ExpressError");
 const Campground = require("../models/campground");
+const { campgroundSchema } = require("../schemas");
+const { isLoggedIn } = require("../middleware");
 
 const validateCampground = (req, res, next) => {
   const { error } = campgroundSchema.validate(req.body);
@@ -20,11 +21,11 @@ router.get("/", async (req, res) => {
   res.render("campgrounds/index", { campgrounds }); // render it to campground page
 });
 
-router.get("/new", (req, res) => {
+router.get("/new", isLoggedIn, (req, res) => {
   res.render("campgrounds/new");
 });
 
-router.post("/", validateCampground, async (req, res) => {
+router.post("/", isLoggedIn, validateCampground, async (req, res) => {
   // Debugging the body and header
   // console.log("BODY:", req.body);
   // console.log("HEADERS:", req.headers["content-type"]);
@@ -51,7 +52,7 @@ router.get("/:id", async (req, res) => {
   // });
 });
 
-router.get("/:id/edit", async (req, res) => {
+router.get("/:id/edit", isLoggedIn, async (req, res) => {
   const campground = await Campground.findById(req.params.id);
   if (!campground) {
     req.flash("error", "Cannot find the campground!");
@@ -72,7 +73,7 @@ router.put("/:id", validateCampground, async (req, res) => {
   res.redirect(`/campgrounds/${campground._id}`);
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", isLoggedIn, async (req, res) => {
   await Campground.findByIdAndDelete(req.params.id);
   req.flash("success", "Successfully deleted campground!");
   res.redirect("/campgrounds");

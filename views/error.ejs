@@ -1,5 +1,5 @@
 <% layout('layouts/boilerplate.ejs') %>
 <div class="max-w-xl mx-auto bg-[#f8d7da] p-3 rounded-sm">
-  <h4 class="text-2xl font-bold text-[#6a1a21] text-center"><%=err.message%></h4>
+  <h4 class="text-2xl font-bold text-[#6a1a21] text-center"><%=err.message%> <%=err.statusCode%></h4>
   <p class="text-center text-[#842029]"><%= err.stack %></p>
 </div>

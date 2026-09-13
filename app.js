@@ -8,8 +8,13 @@ const session = require("express-session");
 const flash = require("connect-flash");
 const ExpressError = require("./helper/ExpressError");
 const methodOverride = require("method-override");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const User = require("./models/user");
+
 const campgrundsRouter = require("./routes/campgrounds");
 const reviewsRouter = require("./routes/reviews");
+const userRouter = require("./routes/users");
 
 // Connecting to database
 mongoose.connect("mongodb://localhost:27017/aluth-camp");
@@ -31,7 +36,7 @@ app.set("view engine", "ejs");
 // Middelwares
 app.use(express.urlencoded({ extended: true })); // to load/parse form data by req
 app.use(methodOverride("_method"));
-app.use(express.static(path.join(__dirname, "public"))); // to serve the public folder directory
+app.use(express.static(path.join(__dirname, "public"))); // to serve the public folder directory with absolute path
 
 // Session
 const sessionConfig = {
@@ -47,14 +52,27 @@ const sessionConfig = {
 app.use(session(sessionConfig));
 app.use(flash());
 
-// Create flash middleware
+app.use(passport.initialize());
+app.use(passport.session());
+// use authenticate method of model in LocalStrategy to insert data
+// passport.use(new LocalStrategy(User.authenticate()));
+passport.use(User.createStrategy()); // new way
+
+// Store/remove data into the session
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+// Create global object to pass data through the application during the request-response cycle. It allows you to store variables that can be accessed by your templates and other middleware functions.
 app.use((req, res, next) => {
+  console.log(req.session);
+  res.locals.currentUser = req.user;
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
   next();
 });
 
 // Router
+app.use("/", userRouter);
 app.use("/campgrounds", campgrundsRouter);
 app.use("/campgrounds/:id/reviews", reviewsRouter);
 
