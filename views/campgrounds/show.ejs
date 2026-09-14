@@ -6,41 +6,49 @@
       <h5 class="mb-2 text-2xl font-semibold tracking-tight"><%= campground.title %> Details!</h5>
       <p class="mb-1"><%= campground.description %></p>
       <p class="mb-1 text-zinc-500"><%= campground.location %></p>
+      <p class="mb-1">Submited by: <%= campground.author.username %></p>
       <p class="mb-1">$<%= campground.price %>/night</p>
-      <a
+      <% if (currentUser && campground.author.equals(currentUser._id)) { %>
+        <a
         href="/campgrounds/<%= campground._id %>/edit"
         class="inline-block px-6 py-2 bg-blue-600 text-white font-medium text-sm rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:outline-none active:bg-blue-800 transition duration-150 ease-in-out"
         >Edit</a
-      >
-      <form class="inline" action="/campgrounds/<%= campground._id %>?_method=delete" method="post">
-        <button
+        >
+        <form class="inline" action="/campgrounds/<%= campground._id %>?_method=delete" method="post">
+          <button
           class="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:shadow-lg transition duration-150 ease-in-out">
           Delete
         </button>
+      <% } %>
       </div>
     </form>
   </div>
   <div class="max-w-lg w-5xl">
-    <form action="/campgrounds/<%= campground._id %>/reviews" method="post" class="validated-form" novalidate>
-      <h2 class="font-medium text-xl">Leave a Review</h2>
-      <div class="mt-2">
-        <label class="block font-medium" for="rating">Rating</label>
-        <input class="block w-full" type="range" name="review[rating]" min="1" max="5" id="rating">
-      </div>
-      <div class="mt-2">
-        <label class="block font-medium" for="review">Review</label>
-        <textarea class="block w-full border p-2" name="review[body]" id="review" cols="30" rows="5" required></textarea>
-        <p class="invisible text-red-500 text-sm">Please add a review.</p>
-      </div>
-      <button class="mt-2 px-3 py-2 border border-[#198754] bg-[#198754] text-white hover:bg-[#157347] hover:border-[#146c43] p-2 rounded-md transition duration-150 ease-in-out" type="submit">Add Review</button>
-    </form>
+    <% if (currentUser) { %>
+      <form action="/campgrounds/<%= campground._id %>/reviews" method="post" class="validated-form" novalidate>
+        <h2 class="font-medium text-xl">Leave a Review</h2>
+        <div class="mt-2">
+          <label class="block font-medium" for="rating">Rating</label>
+          <input class="block w-full" type="range" name="review[rating]" min="1" max="5" id="rating">
+        </div>
+        <div class="mt-2">
+          <label class="block font-medium" for="review">Review</label>
+          <textarea class="block w-full border p-2" name="review[body]" id="review" cols="30" rows="5" required></textarea>
+          <p class="invisible text-red-500 text-sm">Please add a review.</p>
+        </div>
+        <button class="mt-2 px-3 py-2 border border-[#198754] bg-[#198754] text-white hover:bg-[#157347] hover:border-[#146c43] p-2 rounded-md transition duration-150 ease-in-out" type="submit">Add Review</button>
+      </form>
+    <% } %>
     <% for (const review of campground.reviews) { %>
       <div class="border border-zinc-400 p-1 my-3 rounded-sm">
         <p class="text-l font-semibold">Rating: <%= review.rating %></p>
+        <p class="text-sm text-zinc-500">By <%= review.author.username %></p>
         <p>Review: <%= review.body %></p>
-        <form action="/campgrounds/<%= campground._id %>/reviews/<%= review._id %>?_method=delete" method="post">
-          <button class="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:shadow-lg transition duration-150 ease-in-out my-1">Delete</button>
-        </form>
+         <% if (currentUser && review.author.equals(currentUser._id)) { %>
+          <form action="/campgrounds/<%= campground._id %>/reviews/<%= review._id %>?_method=delete" method="post">
+            <button class="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:shadow-lg transition duration-150 ease-in-out my-1">Delete</button>
+          </form>
+         <% } %> 
       </div>
     <% } %>
   </div>

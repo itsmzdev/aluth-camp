@@ -1,20 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const ExpressError = require("../helper/ExpressError");
 const Campground = require("../models/campground");
-const { campgroundSchema } = require("../schemas");
-const { isLoggedIn } = require("../middleware");
-
-const validateCampground = (req, res, next) => {
-  const { error } = campgroundSchema.validate(req.body);
-  // console.log(error);
-  if (error) {
-    const msg = error.details.map((el) => el.message).join(",");
-    throw new ExpressError(msg);
-  } else {
-    next();
-  }
-};
+const { isLoggedIn, isAuthor, validateCampground } = require("../middleware");
 
 router.get("/", async (req, res) => {
   const campgrounds = await Campground.find({}); // find all camps in the db
@@ -32,6 +19,7 @@ router.post("/", isLoggedIn, validateCampground, async (req, res) => {
 
   // if (!req.body.campground) throw new ExpressError("Invalid Campground Data", 400);
   const campground = new Campground(req.body.campground);
+  campground.author = req.user._id;
   await campground.save();
   req.flash("success", "Successfully made a new campground!");
   res.redirect(`/campgrounds/${campground._id}`);
@@ -40,7 +28,14 @@ router.post("/", isLoggedIn, validateCampground, async (req, res) => {
 router.get("/:id", async (req, res) => {
   // const { id } = req.params;
   // Used async await to get the data
-  const campground = await Campground.findById(req.params.id).populate("reviews");
+  const campground = await Campground.findById(req.params.id)
+    .populate({
+      path: "reviews",
+      populate: {
+        path: "author",
+      },
+    })
+    .populate("author");
   if (!campground) {
     req.flash("error", "Cannot find the campground!");
     return res.redirect("/campgrounds");
@@ -52,7 +47,7 @@ router.get("/:id", async (req, res) => {
   // });
 });
 
-router.get("/:id/edit", isLoggedIn, async (req, res) => {
+router.get("/:id/edit", isLoggedIn, isAuthor, async (req, res) => {
   const campground = await Campground.findById(req.params.id);
   if (!campground) {
     req.flash("error", "Cannot find the campground!");
@@ -60,8 +55,8 @@ router.get("/:id/edit", isLoggedIn, async (req, res) => {
   }
   res.render("campgrounds/edit", { campground });
 });
-router.put("/:id", validateCampground, async (req, res) => {
-  // res.send("It worked!!");
+
+router.put("/:id", isLoggedIn, isAuthor, validateCampground, async (req, res) => {
   // const { id } = req.params;
   // await Campground.updateOne({ _id: id }, { $set: req.body.campground });
   // Instead above method, there is better way findByIDAndUpdate()
@@ -73,7 +68,7 @@ router.put("/:id", validateCampground, async (req, res) => {
   res.redirect(`/campgrounds/${campground._id}`);
 });
 
-router.delete("/:id", isLoggedIn, async (req, res) => {
+router.delete("/:id", isLoggedIn, isAuthor, async (req, res) => {
   await Campground.findByIdAndDelete(req.params.id);
   req.flash("success", "Successfully deleted campground!");
   res.redirect("/campgrounds");
