@@ -27,12 +27,39 @@
     <% if (currentUser) { %>
       <form action="/campgrounds/<%= campground._id %>/reviews" method="post" class="validated-form" novalidate>
         <h2 class="font-medium text-xl">Leave a Review</h2>
-        <div class="mt-2">
+        <!-- <div class="mt-2">
           <label class="block font-medium" for="rating">Rating</label>
           <input class="block w-full" type="range" name="review[rating]" min="1" max="5" id="rating">
+        </div> -->
+        <div class="flex flex-row-reverse justify-end gap-1 [&>label]:text-gray-300 [&>label]:cursor-pointer [&>label:hover]:text-amber-400 [&>label:hover~label]:text-amber-400 [&>input:checked+label]:text-amber-400 [&>input:checked~label]:text-amber-400 [&>label]:p-1 [&>label:hover]:scale-110 [&>label]:transition-transform" >
+
+          <input type="radio" id="star-5" name="review[rating]" value="5" class="hidden" />
+          <label for="star-5">
+            <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+          </label>
+
+          <input type="radio" id="star-4" name="review[rating]" value="4" class="hidden" />
+          <label for="star-4">
+            <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+          </label>
+
+          <input type="radio" id="star-3" name="review[rating]" value="3" class="hidden" />
+          <label for="star-3" >
+            <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+          </label>
+
+          <input type="radio" id="star-2" name="review[rating]" value="2" class="hidden" />
+          <label for="star-2" >
+            <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+          </label>
+
+          <input type="radio" id="star-1" name="review[rating]" value="1" class="hidden" checked/>
+          <label for="star-1" >
+            <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+          </label>
         </div>
         <div class="mt-2">
-          <label class="block font-medium" for="review">Review</label>
+          <label class="block font-medium mb-1" for="review">Review</label>
           <textarea class="block w-full border p-2" name="review[body]" id="review" cols="30" rows="5" required></textarea>
           <p class="invisible text-red-500 text-sm">Please add a review.</p>
         </div>
@@ -42,6 +69,14 @@
     <% for (const review of campground.reviews) { %>
       <div class="border border-zinc-400 p-1 my-3 rounded-sm">
         <p class="text-l font-semibold">Rating: <%= review.rating %></p>
+        <div class='flex gap-0.5'>
+          <% for( let i = 0; i < review.rating; i++ ) { %>
+              <svg class="w-6 h-6 fill-amber-400" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+          <% } %>
+          <% for( let i = 0; i < 5 - review.rating; i++ ) { %>
+              <svg class="w-6 h-6 stroke-amber-400 fill-white" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+          <% } %>
+        </div>
         <p class="text-sm text-zinc-500">By <%= review.author.username %></p>
         <p>Review: <%= review.body %></p>
          <% if (currentUser && review.author.equals(currentUser._id)) { %>
