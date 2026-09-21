@@ -1,4 +1,7 @@
 /** Try to understand the full code at home when you pull */
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
 const express = require("express");
 const app = express();
 const path = require("path");
@@ -6,7 +9,7 @@ const mongoose = require("mongoose");
 const ejsMate = require("ejs-mate");
 const session = require("express-session");
 const flash = require("connect-flash");
-const ExpressError = require("./helper/ExpressError");
+const ExpressError = require("./utils/ExpressError");
 const methodOverride = require("method-override");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
@@ -87,6 +90,15 @@ app.all("/{*path}", (req, res, next) => {
 
 app.use((err, req, res, next) => {
   // res.send("Oh Boy We Got Hit By Something!!!");
+
+  // Intercept Multer validation or file size errors
+  if ((err.message && err.message.includes("Invalid file format")) || err.code === "LIMIT_FILE_SIZE") {
+    const errorMsg = err.code === "LIMIT_FILE_SIZE" ? "File is too large! Maximum limit is 5MB." : err.message;
+
+    req.flash("error", errorMsg);
+    return res.redirect("/campgrounds/new");
+  }
+
   const { statusCode = 500 } = err;
   if (!err.message) err.message = "Oh No, Something went wrong!";
   res.status(statusCode).render("error", { err });

@@ -1,4 +1,5 @@
 const Campground = require("../models/campground");
+const { imageUpload } = require("../helper/imageUpload");
 
 module.exports.index = async (req, res) => {
   const campgrounds = await Campground.find({}); // find all camps in the db
@@ -15,11 +16,41 @@ module.exports.createCampground = async (req, res) => {
   // console.log("HEADERS:", req.headers["content-type"]);
 
   // if (!req.body.campground) throw new ExpressError("Invalid Campground Data", 400);
-  const campground = new Campground(req.body.campground);
-  campground.author = req.user._id;
-  await campground.save();
-  req.flash("success", "Successfully made a new campground!");
-  res.redirect(`/campgrounds/${campground._id}`);
+
+  // Upload images to cloudinary
+  try {
+    // Checks if user submited a form without img and checks user selected empty array of images
+    if (!req.files || req.files.length === 0) {
+      // return res.status(400).json({ success: false, message: "No file uploaded" });
+      req.flash("error", "You must upload at least one image!");
+      return res.redirect("/campgrounds/new");
+    }
+
+    // Call helper and get array of uploaded file data
+    const images = await imageUpload(req.files);
+
+    const campground = new Campground(req.body.campground);
+    campground.images = images;
+    campground.author = req.user._id;
+    await campground.save();
+    console.log(campground);
+    req.flash("success", "Successfully made a new campground!");
+    res.redirect(`/campgrounds/${campground._id}`);
+
+    // Respond back with success details in the browser
+    // return res.status(200).json({
+    //   success: true,
+    //   message: "Upload successful!",
+    //   files: fileData, // Returns an array of uploaded image details
+    // });
+  } catch (error) {
+    // If request got any error like your internet disconnects, or Cloudinary rejects the image
+    // return res.status(500).json({ success: false, message: "Upload failed", error: error.message });
+
+    console.error("Cloudinary Upload Error:", error);
+    req.flash("error", "Something went wrong while uploading your images. Please try again.");
+    return res.redirect("/campgrounds/new");
+  }
 };
 
 module.exports.showCampground = async (req, res) => {
@@ -61,6 +92,11 @@ module.exports.updateCampground = async (req, res) => {
   const campground = await Campground.findByIdAndUpdate(id, req.body.campground, { runValidators: true, returnDocument: "after" });
   // Colt spread the data and send a copy of the object like below instead of send the whole body object like i did above, both are valid way
   // const campground = await Campground.findByIdAndUpdate(id, {...req.body.campground})
+
+  // Call helper and get array of uploaded file data
+  const images = await imageUpload(req.files);
+  campground.images.push(...images);
+  await campground.save();
   req.flash("success", "Successfully updated campground!");
   res.redirect(`/campgrounds/${campground._id}`);
 };

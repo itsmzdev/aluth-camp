@@ -32,3 +32,4 @@ Thumbs.db
 # Optional: Build outputs (if using build tools later)
 dist/
 build/
+public/css/output.css

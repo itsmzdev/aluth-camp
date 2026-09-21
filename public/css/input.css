@@ -2,3 +2,64 @@
 
 /**@utility container {
   margin-inline: auto; /*making container center*/
+@utility carousel {
+  anchor-name: --carousel;
+  scroll-marker-group: after;
+
+  &::scroll-marker-group {
+    display: flex;
+    justify-content: center;
+    gap: 0.5em;
+  }
+
+  &::scroll-button(*) {
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    background-color: black;
+    color: white;
+    font-size: 1.5rem;
+    padding-bottom: 0.1em;
+    cursor: pointer;
+    position: fixed;
+    position-anchor: --carousel;
+  }
+
+  &::scroll-button(right) {
+    content: "❯";
+    position-area: right center;
+    translate: -50%;
+  }
+
+  &::scroll-button(left) {
+    content: "❮";
+    position-area: left center;
+    translate: 50%;
+  }
+
+  &::scroll-button(left):disabled,
+  &::scroll-button(right):disabled {
+    opacity: 0.5;
+    cursor: auto;
+  }
+
+  @apply overflow-x-scroll snap-x snap-mandatory scrollbar-none scroll-smooth;
+}
+
+@utility carousel-wrap {
+  &::scroll-marker {
+    content: "";
+    height: 1em;
+    width: 1em;
+    background-color: darkgray;
+    border-radius: 50%;
+  }
+
+  &::scroll-marker:target-current {
+    background-color: black;
+    opacity: 0.6;
+  }
+
+  @apply snap-center;
+}

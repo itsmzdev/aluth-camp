@@ -1,7 +1,11 @@
 <% layout('layouts/boilerplate.ejs') %>
 <div class="flex gap-5 justify-center">
   <div class="max-w-lg w-5xl border rounded-lg shadow-xs self-start">
-    <img class="w-full object-cover h-100" src="<%= campground.image %>" alt="" />
+    <div class="<%= (campground.images.length > 1) ? 'carousel gap-3 flex' : "" %>">
+      <% for (const image of campground.images) { %>
+          <img class="carousel-wrap w-full object-cover h-100" src="<%= image.url %>" alt="" />
+      <% } %>
+    </div>
     <div class="p-6">
       <h5 class="mb-2 text-2xl font-semibold tracking-tight"><%= campground.title %> Details!</h5>
       <p class="mb-1"><%= campground.description %></p>

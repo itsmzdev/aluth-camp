@@ -1,5 +1,5 @@
 <% layout('layouts/boilerplate.ejs') %>
-<form action="/campgrounds" method="post" class="validated-form" novalidate>
+<form action="/campgrounds" method="post" class="validated-form" enctype="multipart/form-data" novalidate>
   <div class="mt-10 gap-x-6 flex flex-col items-center">
     <h1 class="text-3xl font-medium mb-3">Add New Campground</h1>
     <div class="w-6/12">
@@ -29,15 +29,21 @@
       </div>
     </div>
     <div class="w-6/12">
-      <label for="image" class="block text-sm/6 font-medium text-gray-900">Image URL</label>
+      <label for="image" class="block text-sm/6 font-medium text-gray-900">Add Image</label>
       <div class="mt-2">
-        <input
+        <!-- <input
           id="image"
           type="text"
           required
           name="campground[image]"
           placeholder="Image Url"
-          class="block w-full rounded-md min-w-0 grow px-3 py-2 text-base text-gray-900 placeholder:text-gray-400 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 transition-colors" />
+          class="block w-full rounded-md min-w-0 grow px-3 py-2 text-base text-gray-900 placeholder:text-gray-400 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 transition-colors" /> -->
+        <input
+          type="file"
+          name="image"
+          id=""
+          class="block w-full rounded-md min-w-0 grow px-3 py-2 text-base text-gray-900 placeholder:text-gray-400 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 transition-colors"
+          multiple />
         <p class="invisible text-red-500 text-sm mt-1">Please upload image.</p>
       </div>
     </div>
