@@ -7,6 +7,11 @@
   scroll-marker-group: after;
 
   &::scroll-marker-group {
+    position: absolute;
+    position-anchor: --carousel;
+    top: calc(anchor(bottom) - (-10px));
+    left: 25%;
+
     display: flex;
     justify-content: center;
     gap: 0.5em;
@@ -15,15 +20,16 @@
   &::scroll-button(*) {
     border: none;
     border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    background-color: black;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(0, 0, 0, 0.6);
     color: white;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     padding-bottom: 0.1em;
     cursor: pointer;
-    position: fixed;
+    position: absolute;
     position-anchor: --carousel;
+    transition: background-color 0.2s ease;
   }
 
   &::scroll-button(right) {
@@ -38,9 +44,8 @@
     translate: 50%;
   }
 
-  &::scroll-button(left):disabled,
-  &::scroll-button(right):disabled {
-    opacity: 0.5;
+  &::scroll-button(*):disabled {
+    opacity: 0.3;
     cursor: auto;
   }
 
@@ -52,12 +57,14 @@
     content: "";
     height: 1em;
     width: 1em;
-    background-color: darkgray;
+    background-color: #cbd5e1;
     border-radius: 50%;
+    transition: all 0.2s ease;
   }
 
   &::scroll-marker:target-current {
-    background-color: black;
+    background-color: #0f172a;
+    transform: scale(1.2);
     opacity: 0.6;
   }
 

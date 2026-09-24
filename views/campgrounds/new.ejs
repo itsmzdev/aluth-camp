@@ -29,25 +29,6 @@
       </div>
     </div>
     <div class="w-6/12">
-      <label for="image" class="block text-sm/6 font-medium text-gray-900">Add Image</label>
-      <div class="mt-2">
-        <!-- <input
-          id="image"
-          type="text"
-          required
-          name="campground[image]"
-          placeholder="Image Url"
-          class="block w-full rounded-md min-w-0 grow px-3 py-2 text-base text-gray-900 placeholder:text-gray-400 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 transition-colors" /> -->
-        <input
-          type="file"
-          name="image"
-          id=""
-          class="block w-full rounded-md min-w-0 grow px-3 py-2 text-base text-gray-900 placeholder:text-gray-400 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 transition-colors"
-          multiple />
-        <p class="invisible text-red-500 text-sm mt-1">Please upload image.</p>
-      </div>
-    </div>
-    <div class="w-6/12">
       <label for="price" class="block text-sm/6 font-medium text-gray-900">Campground Price</label>
       <div class="mt-2">
         <input
@@ -68,8 +49,28 @@
           name="campground[description]"
           required
           rows="3"
-          class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 transition-colors"></textarea>
+          class="block w-full min-h-[5lh] field-sizing-content rounded-md bg-white px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 transition-colors"></textarea>
         <p class="invisible text-red-500 text-sm mt-1">Please enter description.</p>
+      </div>
+    </div>
+    <div class="w-6/12">
+      <label for="image" class="block text-sm/6 font-medium text-gray-900">Add Images</label>
+      <div class="mt-2">
+        <!-- <input
+          id="image"
+          type="text"
+          required
+          name="campground[image]"
+          placeholder="Image Url"
+          class="block w-full rounded-md min-w-0 grow px-3 py-2 text-base text-gray-900 placeholder:text-gray-400 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 transition-colors" /> -->
+        <input
+          type="file"
+          name="image"
+          id=""
+          class="block cursor-pointer w-full rounded-md min-w-0 grow text-base file:cursor-pointer file:px-3 file:py-2 file:bg-gray-300 file:text-gray-900 text-gray-400 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 transition-colors"
+          multiple />
+        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">PNG, JPG, JPEG</p>
+        <p class="invisible text-red-500 text-sm mt-1">Please upload image.</p>
       </div>
     </div>
     <div class="w-6/12 mt-2 flex items-center gap-x-6">

@@ -11,7 +11,7 @@ forms.forEach((form) => {
     let isFormValid = true;
 
     allFields.forEach((field) => {
-      // 👇 ONE-LINE FIX: Skip hidden radio buttons so they don't disappear
+      // Skip hidden radio buttons so they don't disappear
       if (field.type === "radio") return;
 
       // Find the error paragraph right next to this field
@@ -39,7 +39,7 @@ forms.forEach((form) => {
 
   // Automatically clear errors dynamically while the user types!
   allFields.forEach((field) => {
-    // 👇 ONE-LINE FIX: Skip hidden radio buttons here too
+    // Skip hidden radio buttons here too
     if (field.type === "radio") return;
 
     field.addEventListener("input", function () {

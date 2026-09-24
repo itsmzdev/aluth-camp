@@ -1,5 +1,6 @@
 const Campground = require("../models/campground");
 const { imageUpload } = require("../helper/imageUpload");
+const { cloudinary } = require("../cloudinary");
 
 module.exports.index = async (req, res) => {
   const campgrounds = await Campground.find({}); // find all camps in the db
@@ -23,6 +24,13 @@ module.exports.createCampground = async (req, res) => {
     if (!req.files || req.files.length === 0) {
       // return res.status(400).json({ success: false, message: "No file uploaded" });
       req.flash("error", "You must upload at least one image!");
+      return res.redirect("/campgrounds/new");
+    }
+
+    const MAX_IMAGES = 5; // You can limit in the multer or upload.array("image", 5) too , check it i have commented it, i ahve done it here to redirect with flash
+
+    if (req.files.length > MAX_IMAGES) {
+      req.flash("error", "Please select upto 5 images");
       return res.redirect("/campgrounds/new");
     }
 
@@ -90,13 +98,19 @@ module.exports.updateCampground = async (req, res) => {
   // Instead above method, there is better way findByIDAndUpdate()
   const { id } = req.params;
   const campground = await Campground.findByIdAndUpdate(id, req.body.campground, { runValidators: true, returnDocument: "after" });
-  // Colt spread the data and send a copy of the object like below instead of send the whole body object like i did above, both are valid way
-  // const campground = await Campground.findByIdAndUpdate(id, {...req.body.campground})
+  // const campground = await Campground.findByIdAndUpdate(id, {...req.body.campground}) // Colt spread the data and send a copy of the object like this instead of send the whole body object like i did above, both are valid way
 
   // Call helper and get array of uploaded file data
   const images = await imageUpload(req.files);
   campground.images.push(...images);
   await campground.save();
+  if (req.body.deleteImages) {
+    for (const filename of req.body.deleteImages) {
+      await cloudinary.uploader.destroy(filename);
+    }
+    await campground.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } } } });
+    console.log(campground);
+  }
   req.flash("success", "Successfully updated campground!");
   res.redirect(`/campgrounds/${campground._id}`);
 };
