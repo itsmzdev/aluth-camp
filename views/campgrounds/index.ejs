@@ -1,4 +1,5 @@
 <% layout('layouts/boilerplate.ejs') %>
+<div id="map" class="w-full h-100 rounded-lg"></div>
 <% for (let campground of campgrounds) { %>
     <div class="flex gap-1 p-6 mt-3 border rounded-lg">
         <div class="w-1/2 md:w-1/3">
@@ -17,3 +18,19 @@
         </div>
     </div>
 <% } %>
+
+<%- "<script>" %>
+const maptilerApiKey = "<%- process.env.MAPTILER_API_KEY %>";
+const campgrounds = {
+  type: "FeatureCollection",
+  features: <%- JSON.stringify(
+    campgrounds.map(campground => ({
+      type: "Feature",
+      geometry: campground.geometry,
+      properties: { popUpMarkup: campground?.properties?.popUpMarkup }
+    }))
+  ) %>
+};
+<%- "</script>" %>
+
+<script src="/js/clusterMap.js"></script>

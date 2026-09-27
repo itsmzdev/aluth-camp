@@ -1,6 +1,9 @@
 const Campground = require("../models/campground");
 const { imageUpload } = require("../helper/imageUpload");
 const { cloudinary } = require("../cloudinary");
+const maptilerClient = require("@maptiler/client");
+
+maptilerClient.config.apiKey = process.env.MAPTILER_API_KEY;
 
 module.exports.index = async (req, res) => {
   const campgrounds = await Campground.find({}); // find all camps in the db
@@ -18,26 +21,21 @@ module.exports.createCampground = async (req, res) => {
 
   // if (!req.body.campground) throw new ExpressError("Invalid Campground Data", 400);
 
-  // Upload images to cloudinary
   try {
-    // Checks if user submited a form without img and checks user selected empty array of images
-    if (!req.files || req.files.length === 0) {
-      // return res.status(400).json({ success: false, message: "No file uploaded" });
-      req.flash("error", "You must upload at least one image!");
+    // Maptiler map configs
+    const geoData = await maptilerClient.geocoding.forward(req.body.campground.location, { limit: 1 });
+    // console.log(geoData);
+    if (!geoData.features?.length) {
+      req.flash("error", "Could not geocode that location. Please try again and enter a valid location.");
       return res.redirect("/campgrounds/new");
     }
 
-    const MAX_IMAGES = 5; // You can limit in the multer or upload.array("image", 5) too , check it i have commented it, i ahve done it here to redirect with flash
-
-    if (req.files.length > MAX_IMAGES) {
-      req.flash("error", "Please select upto 5 images");
-      return res.redirect("/campgrounds/new");
-    }
-
-    // Call helper and get array of uploaded file data
+    // Call helper and get array of uploaded images to cloudinary
     const images = await imageUpload(req.files);
 
     const campground = new Campground(req.body.campground);
+    campground.geometry = geoData.features[0].geometry;
+    campground.location = geoData.features[0].place_name;
     campground.images = images;
     campground.author = req.user._id;
     await campground.save();
@@ -97,13 +95,23 @@ module.exports.updateCampground = async (req, res) => {
   // await Campground.updateOne({ _id: id }, { $set: req.body.campground });
   // Instead above method, there is better way findByIDAndUpdate()
   const { id } = req.params;
+  const geoData = await maptilerClient.geocoding.forward(req.body.campground.location, { limit: 1 });
+  // console.log(geoData);
+  if (!geoData.features?.length) {
+    req.flash("error", "Could not geocode that location. Please try again and enter a valid location.");
+    return res.redirect(`/campgrounds/${id}/edit`);
+  }
   const campground = await Campground.findByIdAndUpdate(id, req.body.campground, { runValidators: true, returnDocument: "after" });
   // const campground = await Campground.findByIdAndUpdate(id, {...req.body.campground}) // Colt spread the data and send a copy of the object like this instead of send the whole body object like i did above, both are valid way
+  campground.geometry = geoData.features[0].geometry;
+  campground.location = geoData.features[0].place_name;
 
   // Call helper and get array of uploaded file data
   const images = await imageUpload(req.files);
   campground.images.push(...images);
   await campground.save();
+
+  // Delete images & url from from DB and cloudinary by update
   if (req.body.deleteImages) {
     for (const filename of req.body.deleteImages) {
       await cloudinary.uploader.destroy(filename);
