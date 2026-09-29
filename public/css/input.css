@@ -1,7 +1,5 @@
 @import "tailwindcss";
 
-/**@utility container {
-  margin-inline: auto; /*making container center*/
 @utility carousel {
   anchor-name: --carousel;
   scroll-marker-group: after;

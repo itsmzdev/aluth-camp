@@ -8,9 +8,9 @@
     <link href="https://cdn.maptiler.com/maptiler-sdk-js/v4.1.0/maptiler-sdk.css" rel="stylesheet" />
     <title>AluthCamp</title>
   </head>
-  <body class="flex flex-col h-screen">
+  <body class="flex flex-col min-h-screen bg-black/60 text-white">
     <%- include('../partials/navbar') %>
-    <div class="container mx-auto p-4"><%- include('../partials/flash') %> <%- body %></div>
+    <main class="container mx-auto p-4"><%- include('../partials/flash') %> <%- body %></main>
     <%- include('../partials/footer') %>
     <script src="/js/validation.js"></script>
     <script src="/js/script.js"></script>
