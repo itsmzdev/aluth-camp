@@ -1,9 +1,9 @@
 <% layout('layouts/boilerplate.ejs') %>
 <form action="/campgrounds" method="post" class="validated-form" enctype="multipart/form-data" novalidate>
-  <div class="mt-10 gap-x-6 flex flex-col items-center">
-    <h1 class="text-3xl font-medium mb-3">Add New Campground</h1>
+  <div class="mt-10 gap-x-6 flex flex-col items-center max-w-2xl mx-auto py-6 bg-[#4F6F52]/50 rounded-lg shadow-lg">
+    <h1 class="text-3xl font-medium mb-3 border-b-3 pb-1 border-green-700">New Campground</h1>
     <div class="w-6/12">
-      <label for="title" class="block text-sm/6 font-medium text-gray-900">Title</label>
+      <label for="title" class="block text-sm/6 font-medium">Title</label>
       <div class="mt-2">
         <input
           id="title"
@@ -11,12 +11,12 @@
           required
           name="campground[title]"
           placeholder="Title"
-          class="block w-full rounded-md min-w-0 grow px-3 py-2 text-base text-gray-900 placeholder:text-gray-400 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 transition-colors" />
-        <p class="invisible text-red-500 text-sm mt-1">Please enter title.</p>
+          class="block w-full rounded-md min-w-0 grow px-3 py-2 text-base placeholder:text-white/60 outline-1 -outline-offset-1 outline-white focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6 transition-colors" />
+        <p class="invisible text-red-800 text-sm mt-1">Please enter title.</p>
       </div>
     </div>
     <div class="w-6/12">
-      <label for="location" class="block text-sm/6 font-medium text-gray-900">Location</label>
+      <label for="location" class="block text-sm/6 font-medium">Location</label>
       <div class="mt-2">
         <input
           id="location"
@@ -24,12 +24,12 @@
           required
           name="campground[location]"
           placeholder="Location"
-          class="block w-full rounded-md min-w-0 grow px-3 py-2 text-base text-gray-900 placeholder:text-gray-400 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 transition-colors" />
-        <p class="invisible text-red-500 text-sm mt-1">Please enter location.</p>
+          class="block w-full rounded-md min-w-0 grow px-3 py-2 text-base placeholder:text-white/60 outline-1 -outline-offset-1 outline-white focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6 transition-colors" />
+        <p class="invisible text-red-800 text-sm mt-1">Please enter location.</p>
       </div>
     </div>
     <div class="w-6/12">
-      <label for="price" class="block text-sm/6 font-medium text-gray-900">Campground Price</label>
+      <label for="price" class="block text-sm/6 font-medium">Campground Price</label>
       <div class="mt-2">
         <input
           id="price"
@@ -37,50 +37,50 @@
           required
           name="campground[price]"
           placeholder="$ 0.00"
-          class="block w-full rounded-md min-w-0 grow px-3 py-2 text-base text-gray-900 placeholder:text-gray-400 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 transition-colors" />
-        <p class="invisible text-red-500 text-sm mt-1">Please enter price.</p>
+          class="block w-full rounded-md min-w-0 grow px-3 py-2 text-base placeholder:text-white/60 outline-1 -outline-offset-1 outline-white focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6 transition-colors" />
+        <p class="invisible text-red-800 text-sm mt-1">Please enter price.</p>
       </div>
     </div>
     <div class="w-6/12">
-      <label for="description" class="block text-sm/6 font-medium text-gray-900">Description</label>
+      <label for="description" class="block text-sm/6 font-medium">Description</label>
       <div class="mt-2">
         <textarea
           id="description"
           name="campground[description]"
           required
           rows="3"
-          class="block w-full min-h-[5lh] field-sizing-content rounded-md bg-white px-3 py-1.5 text-base text-gray-900 placeholder:text-gray-400 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 transition-colors"></textarea>
-        <p class="invisible text-red-500 text-sm mt-1">Please enter description.</p>
+          class="block w-full min-h-[5lh] field-sizing-content rounded-md px-3 py-1.5 text-base placeholder:text-white/60 outline-1 -outline-offset-1 outline-white focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6 transition-colors"></textarea>
+        <p class="invisible text-red-800 text-sm mt-1">Please enter description.</p>
       </div>
     </div>
     <div class="w-6/12">
-      <label for="image" class="block text-sm/6 font-medium text-gray-900">Add Images</label>
+      <label for="image" class="block text-sm/6 font-medium">Add Images</label>
       <div class="mt-2">
-        <!-- <input
-          id="image"
-          type="text"
-          required
-          name="campground[image]"
-          placeholder="Image Url"
-          class="block w-full rounded-md min-w-0 grow px-3 py-2 text-base text-gray-900 placeholder:text-gray-400 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 transition-colors" /> -->
         <input
           type="file"
           name="image"
           id=""
-          class="block cursor-pointer w-full rounded-md min-w-0 grow text-base file:cursor-pointer file:px-3 file:py-2 file:bg-gray-300 file:text-gray-900 text-gray-400 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 transition-colors"
+          class="block cursor-pointer w-full rounded-md min-w-0 grow text-base file:cursor-pointer file:px-3 file:py-2 file:bg-[#4F6F52]/50 file: text-white/60 outline-1 -outline-offset-1 outline-white focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6 transition-colors"
           multiple />
-        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">PNG, JPG, JPEG</p>
-        <p class="invisible text-red-500 text-sm mt-1">Please upload image.</p>
+        <p class="mt-1 text-sm text-gray-500 dark:text-white/60">PNG, JPG, JPEG</p>
+        <p class="invisible text-red-800 text-sm mt-1">Please upload image.</p>
       </div>
     </div>
     <div class="w-6/12 mt-2 flex items-center gap-x-6">
       <button
         type="submit"
-        class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+        class="rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-green-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 transition-colors">
         Add Campground
       </button>
       <div>
-        <a href="/campgrounds">All Campgrounds</a>
+        <a
+          href="/campgrounds"
+          class="inline-flex items-center border-2 border-green-700/50 font-medium leading-5 rounded-xl text-sm px-4 py-2.5 shadow-sm hover:bg-green-700/70 hover:text-white hover:border-transparent transition-colors duration-300 ease-in-out">
+          All Campgrounds
+          <svg class="w-4 h-4 ms-1.5 rtl:rotate-180 -me-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4" />
+          </svg>
+        </a>
       </div>
     </div>
   </div>

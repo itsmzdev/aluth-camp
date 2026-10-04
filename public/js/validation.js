@@ -24,7 +24,7 @@ forms.forEach((form) => {
       // Automated Validation Check using HTML5 Validation API
       if (!field.checkValidity() || (field.hasAttribute("required") && field.value.trim() === "")) {
         // Apply Tailwind classes dynamically
-        field.classList.add("outline-red-500", "bg-red-50");
+        field.classList.add("outline-red-500", "focus:outline-red-500", "bg-red-50");
         if (errorMsg) errorMsg.classList.remove("invisible");
 
         isFormValid = false; // Block form submission
@@ -47,7 +47,7 @@ forms.forEach((form) => {
 
       // If the user fixed the field, remove the error styling immediately
       if (field.checkValidity() && field.value.trim() !== "") {
-        field.classList.remove("outline-red-500", "bg-red-50");
+        field.classList.remove("outline-red-500", "focus:outline-red-500", "bg-red-50");
         if (errorMsg) errorMsg.classList.add("invisible");
       }
     });

@@ -8,10 +8,9 @@
     position: absolute;
     position-anchor: --carousel;
     top: calc(anchor(bottom) - (-10px));
-    left: 25%;
+    left: 28%;
 
     display: flex;
-    justify-content: center;
     gap: 0.5em;
   }
 

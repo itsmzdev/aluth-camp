@@ -3,24 +3,25 @@
   <div class="max-w-lg w-5xl border rounded-lg shadow-xs self-start">
     <div class="<%= (campground.images.length > 1) ? 'carousel flex rounded-sm shadow-lg' : "" %>">
       <% for (const image of campground.images) { %>
-          <img class="carousel-wrap w-full h-100 object-cover shrink-0" src="<%= image.url %>" alt="" />
+          <img class="carousel-wrap w-full h-100 object-cover shrink-0 rounded-t-lg" src="<%= image.url %>" alt="" />
       <% } %>
     </div>
     <div class="p-6">
-      <h5 class="mb-2 text-2xl font-semibold tracking-tight"><%= campground.title %> Details!</h5>
+      <h5 class="inline-block mb-2 mt-2 text-2xl font-semibold tracking-tight border-b-3 pb-1 border-green-700"><%= campground.title %> Details!</h5>
       <p class="mb-1"><%= campground.description %></p>
-      <p class="mb-1 text-zinc-500"><%= campground.location %></p>
+      <p class="mb-1 text-white/70"><svg xmlns="http://w3.org" viewBox="0 0 24 24" class="inline-flex size-7 fill-white stroke-green-700 stroke-2 drop-shadow-sm">
+        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg><%= campground.location %></p>
       <p class="mb-1">Submited by: <%= campground.author.username %></p>
-      <p class="mb-1">$<%= campground.price %>/night</p>
+      <p class="mb-3">$<%= campground.price %>/night</p>
       <% if (currentUser && campground.author.equals(currentUser._id)) { %>
         <a
         href="/campgrounds/<%= campground._id %>/edit"
-        class="inline-block px-6 py-2 bg-blue-600 text-white font-medium text-sm rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:outline-none active:bg-blue-800 transition duration-150 ease-in-out"
+        class="mt-2 px-3 py-2 border border-[#198754] bg-[#198754] text-white hover:bg-[#157347] hover:border-[#146c43] p-2 rounded-md transition duration-150 ease-in-out"
         >Edit</a
         >
         <form class="inline" action="/campgrounds/<%= campground._id %>?_method=delete" method="post">
           <button
-          class="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:shadow-lg transition duration-150 ease-in-out">
+          class="rounded-md bg-red-700 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:shadow-lg transition duration-150 ease-in-out">
           Delete
         </button>
       <% } %>
@@ -28,7 +29,7 @@
     </form>
   </div>
   <div class="max-w-lg w-5xl">
-    <div id="map" class="w-full h-75 rounded-lg"></div>
+    <div id="map" class="w-full h-75 rounded-lg mb-3"></div>
     <% if (currentUser) { %>
       <form action="/campgrounds/<%= campground._id %>/reviews" method="post" class="validated-form" novalidate>
         <h2 class="font-medium text-xl">Leave a Review</h2>
@@ -65,8 +66,8 @@
         </div>
         <div class="mt-2">
           <label class="block font-medium mb-1" for="review">Review</label>
-          <textarea class="block w-full border p-2 rounded-lg" name="review[body]" id="review" cols="30" rows="5" required></textarea>
-          <p class="invisible text-red-500 text-sm">Please add a review.</p>
+          <textarea class="block w-full border p-2 rounded-lg outline-1 -outline-offset-1 outline-white focus:outline-2 focus:outline-green-600" name="review[body]" id="review" cols="30" rows="5" required></textarea>
+          <p class="invisible text-red-800 text-sm">Please add a review.</p>
         </div>
         <button class="mt-2 px-3 py-2 border border-[#198754] bg-[#198754] text-white hover:bg-[#157347] hover:border-[#146c43] p-2 rounded-md transition duration-150 ease-in-out" type="submit">Add Review</button>
       </form>
