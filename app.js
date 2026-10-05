@@ -4,6 +4,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 const express = require("express");
 const app = express();
+app.set("query parser", "extended"); // for sanitizer
 const path = require("path");
 const mongoose = require("mongoose");
 const ejsMate = require("ejs-mate");
@@ -13,6 +14,8 @@ const ExpressError = require("./utils/ExpressError");
 const methodOverride = require("method-override");
 const passport = require("passport");
 const User = require("./models/user");
+
+const sanitizeV5 = require("./utils/mongoSanitizeV5.js"); // for sanitizer
 
 const campgrundsRouter = require("./routes/campgrounds");
 const reviewsRouter = require("./routes/reviews");
@@ -39,6 +42,7 @@ app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true })); // to load/parse form data by req
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public"))); // to serve the public folder directory with absolute path
+app.use(sanitizeV5({ replaceWith: "_" })); // for sanitizer
 
 // Session
 const sessionConfig = {
@@ -66,7 +70,8 @@ passport.deserializeUser(User.deserializeUser());
 
 // Create global object to pass data through the application during the request-response cycle. It allows you to store variables that can be accessed by your templates and other middleware functions.
 app.use((req, res, next) => {
-  console.log(req.session);
+  // console.log(req.session);
+  console.log(req.query);
   res.locals.currentUser = req.user;
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");

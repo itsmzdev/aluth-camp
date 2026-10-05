@@ -124,6 +124,10 @@ module.exports.updateCampground = async (req, res) => {
 };
 
 module.exports.deleteCampground = async (req, res) => {
+  /**
+   * To do
+   * Need to implement delete images when delete a camp
+   */
   await Campground.findByIdAndDelete(req.params.id);
   req.flash("success", "Successfully deleted campground!");
   res.redirect("/campgrounds");

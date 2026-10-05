@@ -36,11 +36,11 @@ const seedDB = async () => {
       price,
       images: [
         {
-          url: "https://res.cloudinary.com/itsmzdev/image/upload/v1789982690/aluth-camp/camp5_eeqcmp.jpg",
+          url: "https://res.cloudinary.com/itsmzdev/image/upload/v1791187614/aluth-camp/camp7_boyxfp.jpg",
           filename: "aluth-camp/camp5_eeqcmp",
         },
         {
-          url: "https://res.cloudinary.com/itsmzdev/image/upload/v1789982690/aluth-camp/camp4_ryvpwx.jpg",
+          url: "https://res.cloudinary.com/itsmzdev/image/upload/v1791187613/aluth-camp/camp10_wcnufn.jpg",
           filename: "aluth-camp/camp4_ryvpwx",
         },
       ],

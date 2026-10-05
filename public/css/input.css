@@ -5,12 +5,14 @@
   scroll-marker-group: after;
 
   &::scroll-marker-group {
-    position: absolute;
+    position: fixed;
     position-anchor: --carousel;
-    top: calc(anchor(bottom) - (-10px));
-    left: 28%;
+    /* top: calc(anchor(bottom) - (-10px)); */
+    bottom: calc(anchor(bottom) + 10px);
+    justify-self: anchor-center;
 
     display: flex;
+    justify-content: center;
     gap: 0.5em;
   }
 

@@ -7,7 +7,7 @@
       <% } %>
     </div>
     <div class="p-6">
-      <h5 class="inline-block mb-2 mt-2 text-2xl font-semibold tracking-tight border-b-3 pb-1 border-green-700"><%= campground.title %> Details!</h5>
+      <h5 class="inline-block mb-2 text-2xl font-semibold tracking-tight border-b-3 pb-1 border-green-700"><%= campground.title %> Details!</h5>
       <p class="mb-1"><%= campground.description %></p>
       <p class="mb-1 text-white/70"><svg xmlns="http://w3.org" viewBox="0 0 24 24" class="inline-flex size-7 fill-white stroke-green-700 stroke-2 drop-shadow-sm">
         <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg><%= campground.location %></p>
@@ -21,7 +21,7 @@
         >
         <form class="inline" action="/campgrounds/<%= campground._id %>?_method=delete" method="post">
           <button
-          class="rounded-md bg-red-700 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:shadow-lg transition duration-150 ease-in-out">
+          class="rounded-md bg-red-700 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-800 hover:shadow-lg transition duration-150 ease-in-out">
           Delete
         </button>
       <% } %>
@@ -83,11 +83,11 @@
               <svg class="w-6 h-6 stroke-amber-400 fill-white" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
           <% } %>
         </div>
-        <p class="text-sm text-zinc-500">By <%= review.author.username %></p>
+        <p class="text-sm text-white/70">By <%= review.author.username %></p>
         <p>Review: <%= review.body %></p>
          <% if (currentUser && review.author.equals(currentUser._id)) { %>
           <form action="/campgrounds/<%= campground._id %>/reviews/<%= review._id %>?_method=delete" method="post">
-            <button class="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:shadow-lg transition duration-150 ease-in-out my-1">Delete</button>
+            <button class="rounded-md bg-red-700 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-800  hover:shadow-lg transition duration-150 ease-in-out my-1">Delete</button>
           </form>
          <% } %> 
       </div>

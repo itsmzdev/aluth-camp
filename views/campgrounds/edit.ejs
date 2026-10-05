@@ -75,7 +75,7 @@
       <div class="flex flex-wrap gap-2 mt-2 mb-3">
         <% campground.images.forEach((img, i) => { %>
           <label class="relative block cursor-pointer w-40 aspect-square">
-            <img class="object-cover w-full h-full border border-green-700/50 rounded-xl hover:-translate-y-2 duration-300 ease-out" src="<%= img.thumbnail %>" alt="">
+            <img class="object-cover w-full h-full rounded-xl hover:-translate-y-2 duration-300 ease-out" src="<%= img.thumbnail %>" alt="">
             <input class="absolute top-3 right-3 hover:-translate-y-2 duration-300 ease-out" type="checkbox" name="deleteImages[]" id="image-<%= i %>" value="<%= img.filename %>">
           </label>
         <% }); %>

@@ -76,8 +76,10 @@ module.exports.validateImage = (req, res, next) => {
   // Maximum limit for BOTH creating POST and updating PUT
   if (files && files.length > MAX_IMAGES) {
     req.flash("error", "Please select upto 5 images");
+    if (req.method === "POST") {
+      return res.redirect(`/campgrounds/new`);
+    }
     return res.redirect(`/campgrounds/${req.params.id}/edit`);
   }
-
   next();
 };
