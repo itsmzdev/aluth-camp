@@ -14,6 +14,7 @@ const ExpressError = require("./utils/ExpressError");
 const methodOverride = require("method-override");
 const passport = require("passport");
 const User = require("./models/user");
+const helmet = require("helmet");
 
 const sanitizeV5 = require("./utils/mongoSanitizeV5.js"); // for sanitizer
 
@@ -50,13 +51,58 @@ const sessionConfig = {
   resave: false,
   saveUninitialized: true, // false: does not save empty session. Reccomended for modern apps (use: login, carts...), unless you wanna track every users visit the website (use: tracking user permission, server-sdie analytics...) make it true
   cookie: {
+    name: "session", // default 'connect.sid'
     httpOnly: true,
+    // secure: true, // enable only if you have https (ssl)
     expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
     maxAge: 1000 * 60 * 60 * 24 * 7,
   },
 };
 app.use(session(sessionConfig));
 app.use(flash());
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+  }),
+); // Helmet helps secure web apps by automatically setting and managing HTTP response headers
+
+const scriptSrcUrls = [
+  "https://stackpath.bootstrapcdn.com/",
+  "https://kit.fontawesome.com/",
+  "https://cdnjs.cloudflare.com/",
+  "https://cdn.jsdelivr.net",
+  "https://cdn.maptiler.com/", // add this
+];
+
+const styleSrcUrls = [
+  "https://kit-free.fontawesome.com/",
+  "https://stackpath.bootstrapcdn.com/",
+  "https://fonts.googleapis.com/",
+  "https://use.fontawesome.com/",
+  "https://cdn.jsdelivr.net",
+  "https://cdn.maptiler.com/", // add this
+];
+
+const connectSrcUrls = [
+  "https://api.maptiler.com/", // add this
+];
+
+const fontSrcUrls = [];
+
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: [],
+      connectSrc: ["'self'", ...connectSrcUrls],
+      scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
+      styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+      workerSrc: ["'self'", "blob:"],
+      objectSrc: [],
+      imgSrc: ["'self'", "blob:", "data:", `https://res.cloudinary.com/${process.env.CLOUD_NAME}/`, "https://images.unslash.com/", "https://api.maptiler.com/"],
+      fontSrc: ["'self'", ...fontSrcUrls],
+    },
+  }),
+);
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -71,7 +117,7 @@ passport.deserializeUser(User.deserializeUser());
 // Create global object to pass data through the application during the request-response cycle. It allows you to store variables that can be accessed by your templates and other middleware functions.
 app.use((req, res, next) => {
   // console.log(req.session);
-  console.log(req.query);
+  // console.log(req.query);
   res.locals.currentUser = req.user;
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
