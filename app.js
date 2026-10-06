@@ -15,6 +15,7 @@ const methodOverride = require("method-override");
 const passport = require("passport");
 const User = require("./models/user");
 const helmet = require("helmet");
+const dbUrl = process.env.DB_URL;
 
 const sanitizeV5 = require("./utils/mongoSanitizeV5.js"); // for sanitizer
 
@@ -23,7 +24,7 @@ const reviewsRouter = require("./routes/reviews");
 const userRouter = require("./routes/users");
 
 // Connecting to database
-mongoose.connect("mongodb://localhost:27017/aluth-camp");
+mongoose.connect(dbUrl);
 
 // Databse connection error checking
 const db = mongoose.connection;
