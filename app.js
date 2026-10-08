@@ -15,13 +15,14 @@ const methodOverride = require("method-override");
 const passport = require("passport");
 const User = require("./models/user");
 const helmet = require("helmet");
-const dbUrl = process.env.DB_URL;
+const dbUrl = process.env.MONGODB_URI;
 
 const sanitizeV5 = require("./utils/mongoSanitizeV5.js"); // for sanitizer
 
 const campgrundsRouter = require("./routes/campgrounds");
 const reviewsRouter = require("./routes/reviews");
 const userRouter = require("./routes/users");
+const { MongoStore } = require("connect-mongo");
 
 // Connecting to database
 mongoose.connect(dbUrl);
@@ -46,8 +47,22 @@ app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public"))); // to serve the public folder directory with absolute path
 app.use(sanitizeV5({ replaceWith: "_" })); // for sanitizer
 
-// Session
+// Use MongoStore to store seassion in Mongo instead of System Memory
+const store = MongoStore.create({
+  mongoUrl: dbUrl,
+  touchAfter: 24 * 60 * 60,
+  crypto: {
+    secret: "findbettersecret",
+  },
+});
+
+store.on("error", function (e) {
+  console.log("Session Store ERROR", e);
+});
+
+// Session config
 const sessionConfig = {
+  store,
   secret: "findbettersecret",
   resave: false,
   saveUninitialized: true, // false: does not save empty session. Reccomended for modern apps (use: login, carts...), unless you wanna track every users visit the website (use: tracking user permission, server-sdie analytics...) make it true
@@ -99,7 +114,14 @@ app.use(
       styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
       workerSrc: ["'self'", "blob:"],
       objectSrc: [],
-      imgSrc: ["'self'", "blob:", "data:", `https://res.cloudinary.com/${process.env.CLOUD_NAME}/`, "https://images.unslash.com/", "https://api.maptiler.com/"],
+      imgSrc: [
+        "'self'",
+        "blob:",
+        "data:",
+        `https://res.cloudinary.com/${process.env.CLOUD_NAME}/`,
+        "https://images.unslash.com/",
+        "https://api.maptiler.com/",
+      ],
       fontSrc: ["'self'", ...fontSrcUrls],
     },
   }),

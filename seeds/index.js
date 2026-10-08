@@ -1,10 +1,14 @@
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config({ quiet: true });
+}
 const mongoose = require("mongoose");
 const Campground = require("../models/campground");
 const cities = require("./cities");
 const { places, descriptors } = require("./seedHelpers");
+const dbUrl = process.env.MONGODB_URI;
 
 // Connecting to database
-mongoose.connect("mongodb://localhost:27017/aluth-camp");
+mongoose.connect(dbUrl);
 
 // Databse connection error checking
 const db = mongoose.connection;
@@ -25,14 +29,18 @@ const seedDB = async () => {
     const price = Math.floor(Math.random() * 20) + 10;
     const camp = new Campground({
       // Place your userID from db
-      author: "6aa67da07d7b61255308e9fa",
+      author: "6ac51087d2357e2fa8f05dc8",
       location: `${cities[random1000].city}, ${cities[random1000].state}`,
       geometry: {
         type: "Point",
-        coordinates: [cities[random1000].longitude, cities[random1000].latitude],
+        coordinates: [
+          cities[random1000].longitude,
+          cities[random1000].latitude,
+        ],
       },
       title: `${sample(descriptors)} ${sample(places)}`,
-      description: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repudiandae dolorum odio doloremque. Commodi minima similique voluptatem.",
+      description:
+        "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repudiandae dolorum odio doloremque. Commodi minima similique voluptatem.",
       price,
       images: [
         {
