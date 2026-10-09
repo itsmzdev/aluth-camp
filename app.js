@@ -47,12 +47,14 @@ app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public"))); // to serve the public folder directory with absolute path
 app.use(sanitizeV5({ replaceWith: "_" })); // for sanitizer
 
+const secret = process.env.SECRET || "findbettersecret";
+
 // Use MongoStore to store seassion in Mongo instead of System Memory
 const store = MongoStore.create({
   mongoUrl: dbUrl,
   touchAfter: 24 * 60 * 60,
   crypto: {
-    secret: "findbettersecret",
+    secret,
   },
 });
 
@@ -63,7 +65,7 @@ store.on("error", function (e) {
 // Session config
 const sessionConfig = {
   store,
-  secret: "findbettersecret",
+  secret,
   resave: false,
   saveUninitialized: true, // false: does not save empty session. Reccomended for modern apps (use: login, carts...), unless you wanna track every users visit the website (use: tracking user permission, server-sdie analytics...) make it true
   cookie: {
@@ -181,6 +183,7 @@ app.use((err, req, res, next) => {
   res.status(statusCode).render("error", { err });
 });
 
-app.listen(3000, () => {
-  console.log(`Listening on port 3000`);
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Listening on port ${port}`);
 });
