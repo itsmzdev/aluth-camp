@@ -165,8 +165,12 @@ app.use((err, req, res, next) => {
   // res.send("Oh Boy We Got Hit By Something!!!");
 
   // Intercept Multer validation or file size errors
-  if ((err.message && err.message.includes("Invalid file format")) || err.code === "LIMIT_FILE_SIZE") {
-    const errorMsg = err.code === "LIMIT_FILE_SIZE" ? "File is too large! Maximum limit is 5MB." : err.message;
+  if (
+    (err.message && err.message.includes("Invalid file format")) ||
+    err.code === "LIMIT_FILE_SIZE"
+  ) {
+    const errorMsg =
+      err.code === "LIMIT_FILE_SIZE" ? "File is too large! Maximum limit is 5MB." : err.message;
 
     req.flash("error", errorMsg);
     return res.redirect("/campgrounds/new");

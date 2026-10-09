@@ -25,7 +25,10 @@ const upload = multer({
       cb(null, true);
     } else {
       // Reject the file and return a custom error message
-      cb(new Error("Invalid file format. Only JPG, JPEG, PNG, and WEBP images are allowed!"), false);
+      cb(
+        new Error("Invalid file format. Only JPG, JPEG, PNG, and WEBP images are allowed!"),
+        false,
+      );
     }
   },
 });

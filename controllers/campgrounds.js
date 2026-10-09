@@ -23,10 +23,15 @@ module.exports.createCampground = async (req, res) => {
 
   try {
     // Maptiler map configs
-    const geoData = await maptilerClient.geocoding.forward(req.body.campground.location, { limit: 1 });
+    const geoData = await maptilerClient.geocoding.forward(req.body.campground.location, {
+      limit: 1,
+    });
     // console.log(geoData);
     if (!geoData.features?.length) {
-      req.flash("error", "Could not geocode that location. Please try again and enter a valid location.");
+      req.flash(
+        "error",
+        "Could not geocode that location. Please try again and enter a valid location.",
+      );
       return res.redirect("/campgrounds/new");
     }
 
@@ -95,13 +100,21 @@ module.exports.updateCampground = async (req, res) => {
   // await Campground.updateOne({ _id: id }, { $set: req.body.campground });
   // Instead above method, there is better way findByIDAndUpdate()
   const { id } = req.params;
-  const geoData = await maptilerClient.geocoding.forward(req.body.campground.location, { limit: 1 });
+  const geoData = await maptilerClient.geocoding.forward(req.body.campground.location, {
+    limit: 1,
+  });
   // console.log(geoData);
   if (!geoData.features?.length) {
-    req.flash("error", "Could not geocode that location. Please try again and enter a valid location.");
+    req.flash(
+      "error",
+      "Could not geocode that location. Please try again and enter a valid location.",
+    );
     return res.redirect(`/campgrounds/${id}/edit`);
   }
-  const campground = await Campground.findByIdAndUpdate(id, req.body.campground, { runValidators: true, returnDocument: "after" });
+  const campground = await Campground.findByIdAndUpdate(id, req.body.campground, {
+    runValidators: true,
+    returnDocument: "after",
+  });
   // const campground = await Campground.findByIdAndUpdate(id, {...req.body.campground}) // Colt spread the data and send a copy of the object like this instead of send the whole body object like i did above, both are valid way
   campground.geometry = geoData.features[0].geometry;
   campground.location = geoData.features[0].place_name;

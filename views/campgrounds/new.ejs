@@ -1,6 +1,12 @@
 <% layout('layouts/boilerplate.ejs') %>
-<form action="/campgrounds" method="post" class="validated-form" enctype="multipart/form-data" novalidate>
-  <div class="mt-10 gap-x-6 flex flex-col items-center max-w-2xl mx-auto py-6 bg-[#4F6F52]/50 rounded-lg shadow-lg">
+<form
+  action="/campgrounds"
+  method="post"
+  class="validated-form"
+  enctype="multipart/form-data"
+  novalidate>
+  <div
+    class="mt-10 gap-x-6 flex flex-col items-center max-w-2xl mx-auto py-6 bg-[#4F6F52]/50 rounded-lg shadow-lg">
     <h1 class="text-3xl font-medium mb-3 border-b-3 pb-1 border-green-700">New Campground</h1>
     <div class="w-6/12">
       <label for="title" class="block text-sm/6 font-medium">Title</label>
@@ -77,8 +83,20 @@
           href="/campgrounds"
           class="inline-flex items-center border-2 border-green-700/50 font-medium leading-5 rounded-xl text-sm px-4 py-2.5 shadow-sm hover:bg-green-700/70 hover:text-white hover:border-transparent transition-colors duration-300 ease-in-out">
           All Campgrounds
-          <svg class="w-4 h-4 ms-1.5 rtl:rotate-180 -me-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4" />
+          <svg
+            class="w-4 h-4 ms-1.5 rtl:rotate-180 -me-0.5"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24">
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 12H5m14 0-4 4m4-4-4-4" />
           </svg>
         </a>
       </div>

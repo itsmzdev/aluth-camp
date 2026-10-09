@@ -1,25 +1,39 @@
 <% if (success && success.length) { %>
-    <div class="alert flex items-center justify-between p-3 mb-2 rounded-md bg-[#d1e7dd]  text-[#305a47] border border-[#a3cfbb] gap-4">
-        <div class="text-md font-medium leading-5 flex-1">
-            <%= success %>
-        </div>
-        <button data-dismiss="alert" class="flex items-center justify-center w-7 h-7 hover:text-white hover:bg-[#4b856b]/50 rounded-md transition ease-in-out shrink-0" aria-label="Close alert">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://w3.org">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
-        </button>
-    </div>
-<% } %>
-
-<% if (error && error.length) { %>
-    <div class="alert flex items-center justify-between p-3 mb-2 rounded-md bg-[#f8d7da]  text-[#6b2c33] border border-[#f1aeb5] gap-4">
-        <div class="text-md font-medium leading-5 flex-1">
-            <%= error %>
-        </div>
-        <button data-dismiss="alert" class="flex items-center justify-center w-7 h-7 hover:text-white hover:bg-[#6b2c33]/50 rounded-md transition ease-in-out shrink-0" aria-label="Close alert">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://w3.org">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
-        </button>
-    </div>
+<div
+  class="alert flex items-center justify-between p-3 mb-2 rounded-md bg-[#d1e7dd] text-[#305a47] border border-[#a3cfbb] gap-4">
+  <div class="text-md font-medium leading-5 flex-1"><%= success %></div>
+  <button
+    data-dismiss="alert"
+    class="flex items-center justify-center w-7 h-7 hover:text-white hover:bg-[#4b856b]/50 rounded-md transition ease-in-out shrink-0"
+    aria-label="Close alert">
+    <svg
+      class="w-4 h-4"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2.5"
+      viewBox="0 0 24 24"
+      xmlns="http://w3.org">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+    </svg>
+  </button>
+</div>
+<% } %> <% if (error && error.length) { %>
+<div
+  class="alert flex items-center justify-between p-3 mb-2 rounded-md bg-[#f8d7da] text-[#6b2c33] border border-[#f1aeb5] gap-4">
+  <div class="text-md font-medium leading-5 flex-1"><%= error %></div>
+  <button
+    data-dismiss="alert"
+    class="flex items-center justify-center w-7 h-7 hover:text-white hover:bg-[#6b2c33]/50 rounded-md transition ease-in-out shrink-0"
+    aria-label="Close alert">
+    <svg
+      class="w-4 h-4"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2.5"
+      viewBox="0 0 24 24"
+      xmlns="http://w3.org">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+    </svg>
+  </button>
+</div>
 <% } %>
