@@ -31,13 +31,23 @@ module.exports.validateCampground = (req, res, next) => {
   }
 };
 
+module.exports.isAdmin = async (req, res, next) => {
+  const adminId = "6ac943f654d03258c0c18f98"; // later add roles for users
+
+  if (!req.user || !req.user._id.equals(adminId)) {
+    req.flash("error", "You are not authorized to do that");
+    return req.session.save(() => res.redirect("/campgrounds")); // this redirect only happen when the flash session save complete. if save not completed you will not get the flash msg in redirected page. Since we are now storing our sessions from memory to remote mongodb store there is a delay in saving.
+  }
+  next();
+};
+
 module.exports.isAuthor = async (req, res, next) => {
   const { id } = req.params;
   const campground = await Campground.findById(id);
   // Here i have used res.locals.currentUser._id to find
-  if (!campground.author.equals(res.locals.currentUser._id)) {
+  if (!campground.author.equals(req.user._id)) {
     req.flash("error", "You are not authorized to do that");
-    return res.redirect(`/campgrounds/${id}`);
+    return req.session.save(() => res.redirect(`/campgrounds/${id}`));
   }
   next();
 };
@@ -45,10 +55,10 @@ module.exports.isAuthor = async (req, res, next) => {
 module.exports.isReviewAuthor = async (req, res, next) => {
   const { id, reviewId } = req.params;
   const review = await Review.findById(reviewId);
-  // Here i have used req.user._id to find, both holds the same data. I just wanted to test if locals working on middleware too. and its working. Use req.user thats the prefered way for this
+  // Here i have used req.user._id to find, both holds the same data. I just wanted to test if locals working on middleware too. and its working. Use req.user thats the prefered way for middleware locals for templates
   if (!review.author.equals(req.user._id)) {
     req.flash("error", "You are not authorized to do that");
-    return res.redirect(`/campgrounds/${id}`);
+    return req.session.save(() => res.redirect(`/campgrounds/${id}`));
   }
   next();
 };
@@ -71,15 +81,15 @@ module.exports.validateImage = (req, res, next) => {
   if (req.method === "POST" && (!files || files.length === 0)) {
     // return res.status(400).json({ success: false, message: "No file uploaded" });
     req.flash("error", "You must upload at least one image!");
-    return res.redirect("/campgrounds/new");
+    return req.session.save(() => res.redirect("/campgrounds/new"));
   }
   // Maximum limit for BOTH creating POST and updating PUT
   if (files && files.length > MAX_IMAGES) {
     req.flash("error", "Please select upto 5 images");
     if (req.method === "POST") {
-      return res.redirect(`/campgrounds/new`);
+      return req.session.save(() => res.redirect("/campgrounds/new"));
     }
-    return res.redirect(`/campgrounds/${req.params.id}/edit`);
+    return req.session.save(() => res.redirect(`/campgrounds/${req.params.id}/edit`));
   }
   next();
 };

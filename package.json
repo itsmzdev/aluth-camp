@@ -5,7 +5,7 @@
   "license": "ISC",
   "author": "mz",
   "type": "commonjs",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "watch-css": "npx @tailwindcss/cli -i ./public/css/input.css -o ./public/css/output.css --content \"./views/**/*.ejs\" --watch",
     "watch-server": "nodemon app.js",
